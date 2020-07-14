@@ -805,6 +805,8 @@ class BaseModel(Representation, metaclass=ModelMetaclass):
             if isinstance(v, ValueWithUnits):
                 dict_key = field_key + f" ({v.unit})"
                 v = v.value
+                yield dict_key, v
+                return
             yield dict_key, v
 
     def _calculate_keys(
