@@ -778,6 +778,10 @@ class BaseModel(Representation, metaclass=ModelMetaclass):
         value_include = ValueItems(self, include) if include else None
 
         for field_key, v in self.__dict__.items():
+            if isinstance(v, ValueWithUnits):
+                dict_key = field_key + f" ({v.unit})"
+                value = v.value
+                yield dict_key, value
             if (
                 (allowed_keys is not None and field_key not in allowed_keys)
                 or (exclude_none and v is None)
@@ -793,9 +797,6 @@ class BaseModel(Representation, metaclass=ModelMetaclass):
                 and not isinstance(v, ValueWithUnits)
             ):
                 dict_key = self.__fields__[field_key].alias
-            elif isinstance(v, ValueWithUnits):
-                dict_key = field_key + f" ({v.unit})"
-                v = v.value
             else:
                 dict_key = field_key
             if to_dict or value_include or value_exclude:
