@@ -778,6 +778,7 @@ class BaseModel(Representation, metaclass=ModelMetaclass):
         value_include = ValueItems(self, include) if include else None
 
         for field_key, v in self.__dict__.items():
+            print("++++++++++++++" + "\n" + f"({field_key, v})")
             if isinstance(v, ValueWithUnits):
                 dict_key = field_key + f" ({v.unit})"
                 value = v.value
